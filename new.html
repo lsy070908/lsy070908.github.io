@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>game of one</title>
+<script>
+	class RecourceUse
+	{
+		constructor(NameOfRecource,RecourceAmount,RecourceID,TextName,TextCount)
+		{
+			this.NameOfRecource = NameOfRecource;
+			this.RecourceAmount = RecourceAmount;
+			this.RecourceID = RecourceID;
+			this.TextName = TextName;
+			this.TextCount = TextCount;
+			this.Displayed = false;
+		}
+		CheckDisplay()
+		{
+			if(this.RecourceAmount != 0)
+			{
+				if(this.Displayed == false)
+				{
+					this.Displayed = true;
+					document.getElementById(this.TextName).innerHTML = this.NameOfRecource + ":";
+				}
+				document.getElementById(this.TextCount).innerHTML = this.RecourceAmount;
+			}
+			
+		}
+	}
+	var AllRecource = [] ,AllReCount = 3;
+	AllRecource[0] = new RecourceUse("树枝",0,0,"StickName","StickCount");
+	AllRecource[1] = new RecourceUse("纤维",0,1,"FiberName","FiberCount");
+	AllRecource[2] = new RecourceUse("浆果",0,2,"BerryName","BerryCount");
+	function CheckThourough()
+	{
+		var i = 0;
+		while(i < AllReCount)
+		{
+			AllRecource[i].CheckDisplay();
+			i++;
+		}
+	}
+	function Collection()
+	{
+		if(energy >= 10)
+		{
+			energy -= 10;
+			var c1 = Math.random();
+			if(c1 <= 0.3)//stick
+			{
+				if(c1 <= 0.6*0.3) AllRecource[0].RecourceAmount += 1;
+				else if(c1 <= 0.85*0.3) AllRecource[0].RecourceAmount += 2;
+				else AllRecource[0].RecourceAmount+=3;
+			}
+			c1 = Math.random();
+			if(c1 <= 0.3)//fiber
+			{
+				if(c1 <= 0.75*0.3) AllRecource[1].RecourceAmount += 1;
+				else AllRecource[1].RecourceAmount += 2;
+			}
+			c1 = Math.random();
+			if(c1 <= 0.4)//berry
+			{
+				if(c1 <= 0.4*0.7) AllRecource[2].RecourceAmount += 1;
+				else AllRecource[2].RecourceAmount += 2;
+			}
+			CheckThourough();
+			EnergyUpdate();
+		}
+	}
+</script>
+<script>
+	var TimeCounter = 0;
+	var day = 0;
+	var hour = 0;
+	var energy = 0;
+	window.setInterval(
+	function TimeAdder()
+	{
+		
+		TimeCounter += 1;
+		day = Math.floor(TimeCounter / 24);
+		hour = TimeCounter % 24;
+		if(hour < 10) hour = "0"+ hour;
+		document.getElementById("time").innerHTML = day + "日" + hour + "时";
+		
+	},3000);
+	function EnergyUpdate()
+	{
+		document.getElementById("EnergyCount").innerHTML = "  体力:" + energy;
+	}
+	window.setInterval(
+	function EnergyAdder()
+	{
+		energy += 1;
+		EnergyUpdate();
+	},600)
+	
+</script>
+</head>
+<body>
+
+<div id="container" style="height:900px;width:1000px;border:1px solid">
+
+<div id="tag_choose" style="height:60px;width:1000px;border:1px;border-style:none none solid none">
+	<p style="color:blue;text-align:center;">Game of One  </p>
+	
+</div>
+
+<div id="resources" style="height:823px;width:100px;float:left;border:1px;border-style:none solid none none">
+资源:
+<span id = "recource">
+	<br><span id = "StickName"></span><span id = "StickCount"></span>
+	<br><span id = "FiberName"></span><span id = "FiberCount"></span>
+	<br><span id = "BerryName"></span><span id = "BerryCount"></span>
+</span>
+</div>
+
+<div id="main_board" style="height:823px;width:745px;float:left;">
+<span id = "time">0日00时</span><span id = "EnergyCount">体力:0</span>
+<br>
+<button type = "button" onclick="Collection()" >收集</button>
+</div>
+<div id="massage" style="height:823px;width:150px;float:left;border:1px;border-style:none none none solid">
+text
+<p id = "textBar">
+
+</p>
+</div>
+
+</div>
+ 
+</body>
+</html>
